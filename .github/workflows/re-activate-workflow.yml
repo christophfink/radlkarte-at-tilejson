@@ -25,6 +25,6 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" \
           https://api.github.com/repos/$REPOSITORY/actions/workflows/create-vector-tiles/enable
         env:
-          REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
+          REPOSITORY: ${{ github.repository }}
       #- run: curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/create-vector-tiles/enable
       #- run: curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/re-activate-workflow/enable
