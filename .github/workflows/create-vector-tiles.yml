@@ -1,0 +1,62 @@
+# vim: set tabstop=2 softtabstop=2 shiftwidth=2 expandtab:
+
+name: Create vector tiles
+on:
+  workflow_call:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+
+jobs:
+  create-vector-tiles:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - uses: nyurik/action-setup-postgis@v2
+        id: postgres
+    
+      - run: psql -v ON_ERROR_STOP=1 -c 'SELECT PostGIS_Full_Version();' "$CONNECTION_STR"
+        env:
+          CONNECTION_STR: ${{ steps.postgres.outputs.connection-uri }}
+
+      - run: cargo install cargo-binstall
+      - run: cargo binstall martin
+
+      - run: apt update && apt install gdal-bin
+
+      - uses: actions/checkout@v4
+        with:
+          repository: markusstraub/radlkarte
+          path: radlkarte
+
+      - run: |
+          APPEND=""
+          for GEOJSON in radlkarte/data/radlkarte-*.geojson; do
+            ogr2ogr "${CONNECTION_STR}" -nln radlkarte ${APPEND} ${GEOJSON}
+            APPEND="-append"
+          done
+        env:
+          CONNECTION_STR: ${{ steps.postgres.outputs.connection-uri }}
+
+      - run: |
+          martin-cp \
+            --output-file=tileset.mbtiles \
+            --mbtiles-type normalized \
+           --bbox="8.8587, 45.7823, 17.1608, 49.5752" \
+           --min-zoom 9 \
+           --max-zoom 16 \
+           --source radlkarte \
+           "${CONNECTION_STR}"
+        env:
+          CONNECTION_STR: ${{ steps.postgres.outputs.connection-uri }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tileset
+          path: tileset.mbtiles
