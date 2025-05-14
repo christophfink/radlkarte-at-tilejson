@@ -10,8 +10,7 @@ on:
     - cron: "1 2 */59 * *"
 
 permissions:
-  contents: read
-  repository: write
+  contents: write
 
 jobs:
   reactivate-scheduled-workflow:
@@ -23,7 +22,7 @@ jobs:
           curl -L \
           -X PUT \
           -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" \
+          -H "Authorization: Bearer ${{ secrets.SCHEDULE_TOKEN}}" \
           https://api.github.com/repos/$REPOSITORY/actions/workflows/create-vector-tiles/enable
         env:
           REPOSITORY: ${{ github.repository }}
