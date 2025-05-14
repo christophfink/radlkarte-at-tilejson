@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  repository: write
 
 jobs:
   reactivate-scheduled-workflow:
