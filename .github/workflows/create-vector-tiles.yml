@@ -38,7 +38,7 @@ jobs:
       - run: |
           APPEND=""
           for GEOJSON in radlkarte/data/radlkarte-*.geojson; do
-            ogr2ogr "${CONNECTION_STR}" -nln radlkarte ${APPEND} ${GEOJSON}
+            ogr2ogr -f PostgreSQL "${CONNECTION_STR}" -nln radlkarte ${APPEND} ${GEOJSON}
             APPEND="-append"
           done
         env:
