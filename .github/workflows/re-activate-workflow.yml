@@ -23,8 +23,6 @@ jobs:
           -X PUT \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.SCHEDULE_TOKEN}}" \
-          https://api.github.com/repos/$REPOSITORY/actions/workflows/create-vector-tiles/enable
-        env:
-          REPOSITORY: ${{ github.repository }}
+          https://api.github.com/repos/christophfink/radlkarte-at-tilejson/actions/workflows/create-vector-tiles/enable
       #- run: curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/create-vector-tiles/enable
       #- run: curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/re-activate-workflow/enable
