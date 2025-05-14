@@ -25,8 +25,7 @@ jobs:
         env:
           CONNECTION_STR: ${{ steps.postgres.outputs.connection-uri }}
 
-      - run: cargo install cargo-binstall
-      - run: cargo binstall martin
+      - run: cargo install martin
 
       - run: sudo apt update && sudo apt install gdal-bin
 
