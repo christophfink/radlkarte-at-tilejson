@@ -28,7 +28,7 @@ jobs:
       - run: cargo install cargo-binstall
       - run: cargo binstall martin
 
-      - run: apt update && apt install gdal-bin
+      - run: sudo apt update && sudo apt install gdal-bin
 
       - uses: actions/checkout@v4
         with:
@@ -46,12 +46,10 @@ jobs:
 
       - run: |
           martin-cp \
-            --output-file=tileset.mbtiles \
-            --mbtiles-type normalized \
-           --bbox="8.8587, 45.7823, 17.1608, 49.5752" \
+           --source radlkarte \
+           --output-file=tileset.mbtiles \
            --min-zoom 9 \
            --max-zoom 16 \
-           --source radlkarte \
            "${CONNECTION_STR}"
         env:
           CONNECTION_STR: ${{ steps.postgres.outputs.connection-uri }}
