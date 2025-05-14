@@ -13,10 +13,16 @@ permissions:
   contents: read
 
 jobs:
-  create-vector-tiles:
+  reactivate-scheduled-workflow:
     runs-on: ubuntu-latest
 
     steps:
       - run: echo "DEBUGDEBUGDEBUG"
+      - run: |
+          curl -L \
+          -X PUT \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" \
+          https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/create-vector-tiles/enable
       #- run: curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/create-vector-tiles/enable
       #- run: curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN}}" https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/re-activate-workflow/enable
