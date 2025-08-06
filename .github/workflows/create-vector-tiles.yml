@@ -21,8 +21,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-
       - uses: nyurik/action-setup-postgis@v2
         id: postgres
     
@@ -30,7 +28,8 @@ jobs:
         env:
           CONNECTION_STR: ${{ steps.postgres.outputs.connection-uri }}
 
-      - run: cargo install martin
+      - uses: taiki-e/install-action@v2
+        with: { tool: martin } # also includes martin-cp
 
       - run: sudo apt update && sudo apt install gdal-bin
 
@@ -60,6 +59,7 @@ jobs:
            --min-zoom 9 \
            --max-zoom 16 \
            --bbox="8.8587, 45.7823, 17.1608, 49.5752" \
+           --concurrency 2 \
            "${CONNECTION_STR}"
         env:
           CONNECTION_STR: ${{ steps.postgres.outputs.connection-uri }}
